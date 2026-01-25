@@ -13,3 +13,10 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Ignore all files in .idea, but keep some important ones
+/.idea/*
+!/.idea/gradle.xml
+!/.idea/misc.xml
+!/.idea/runConfigurations.xml
+!/.idea/vcs.xml
