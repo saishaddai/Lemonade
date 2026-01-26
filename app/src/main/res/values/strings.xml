@@ -7,7 +7,7 @@
     <string name="instructions_4">Tap the empty glass to start again</string>
     <string name="cd_lemon_tree">Lemon Tree</string>
     <string name="cd_lemon">Lemon</string>
-    <string name="cd_glass_of-lemonadde">Glass of lemonade</string>
+    <string name="cd_glass_of_lemonade">Glass of lemonade</string>
     <string name="cd_empty_glass">Empty Glass</string>
 
 </resources>
