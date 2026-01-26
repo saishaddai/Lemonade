@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -62,18 +64,20 @@ private fun LemonadeBody() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.lemon_tree),
-            contentDescription = stringResource(R.string.cd_lemon_tree),
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(220, 220, 220))
-                .border(
-                    width = 2.dp,
-                    color = Color(105, 205, 216),
-                    shape = RectangleShape
-                )
-        )
+
+        Card(
+            shape = RoundedCornerShape(28.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.lemon_tree),
+                contentDescription = stringResource(R.string.cd_lemon_tree),
+                modifier = Modifier
+                    .border(2.dp, Color(105, 205, 216), RectangleShape)
+                    .padding(16.dp)
+            )
+        }
+
+
 
         Spacer(Modifier.height(16.dp))
 
