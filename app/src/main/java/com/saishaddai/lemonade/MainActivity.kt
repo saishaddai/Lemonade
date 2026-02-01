@@ -50,7 +50,8 @@ sealed class Stage {
     class Lemon(
         override val imageId: Int = R.drawable.lemon_squeeze,
         override val contentDescriptionId: Int = R.string.cd_lemon,
-        override val instructions: Int = R.string.instructions_2
+        override val instructions: Int = R.string.instructions_2,
+        var squeezeCount: Int = (2..4).random()
     ) : Stage()
 
     class Lemonade(
@@ -114,9 +115,16 @@ private fun LemonadeBody() {
                     .clickable {
                         stage = when (stage) {
                             is Stage.Tree -> Stage.Lemon()
-                            is Stage.Lemon -> Stage.Lemonade()
+                            is Stage.Lemon -> {
+                                (stage as Stage.Lemon).squeezeCount--
+                                if ((stage as Stage.Lemon).squeezeCount == 0) {
+                                    Stage.Lemonade()
+                                } else {
+                                    stage
+                                }
+                            }
                             is Stage.Lemonade -> Stage.Glass()
-                            else -> Stage.Tree()
+                            is Stage.Glass -> Stage.Tree()
                         }
                     }
             )
