@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,6 +35,36 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saishaddai.lemonade.ui.theme.LemonadeTheme
+
+sealed class Stage {
+    abstract val imageId: Int
+    abstract val contentDescriptionId: Int
+    abstract val instructions: Int
+
+    class Tree(
+        override val imageId: Int = R.drawable.lemon_tree,
+        override val contentDescriptionId: Int = R.string.cd_lemon_tree,
+        override val instructions: Int = R.string.instructions_1
+    ) : Stage()
+
+    class Lemon(
+        override val imageId: Int = R.drawable.lemon_squeeze,
+        override val contentDescriptionId: Int = R.string.cd_lemon,
+        override val instructions: Int = R.string.instructions_2
+    ) : Stage()
+
+    class Lemonade(
+        override val imageId: Int = R.drawable.lemon_drink,
+        override val contentDescriptionId: Int = R.string.cd_glass_of_lemonade,
+        override val instructions: Int = R.string.instructions_3
+    ) : Stage()
+
+    class Glass(
+        override val imageId: Int = R.drawable.lemon_restart,
+        override val contentDescriptionId: Int = R.string.cd_empty_glass,
+        override val instructions: Int = R.string.instructions_4
+    ) : Stage()
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +92,8 @@ fun LemonadeScreen() {
 
 @Composable
 private fun LemonadeBody() {
+    var stage: Stage by remember { mutableStateOf(Stage.Tree()) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -69,19 +106,25 @@ private fun LemonadeBody() {
             shape = RoundedCornerShape(28.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.lemon_tree),
-                contentDescription = stringResource(R.string.cd_lemon_tree),
+                painter = painterResource(id = stage.imageId),
+                contentDescription = stringResource(stage.contentDescriptionId),
                 modifier = Modifier
                     .border(2.dp, Color(105, 205, 216), RectangleShape)
                     .padding(16.dp)
+                    .clickable {
+                        stage = when (stage) {
+                            is Stage.Tree -> Stage.Lemon()
+                            is Stage.Lemon -> Stage.Lemonade()
+                            is Stage.Lemonade -> Stage.Glass()
+                            else -> Stage.Tree()
+                        }
+                    }
             )
         }
 
-
-
         Spacer(Modifier.height(16.dp))
 
-        Text(text = stringResource(R.string.instructions_1))
+        Text(text = stringResource(stage.instructions))
     }
 }
 
